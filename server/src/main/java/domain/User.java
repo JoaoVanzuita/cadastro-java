@@ -1,18 +1,46 @@
 package domain;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "users")
 public class User {
 
-    String name, email, password;
-    Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_user", nullable = false)
+    Long idUser;
 
-    public User(String name, String email, String password, Integer id) {
+    @Column(name = "name", nullable = false)
+    String name;
+
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    public User(String name, String email, String password, Long id) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.id = id;
+        this.idUser = id;
+    }
+    public User() {
     }
 
-    public User() {
+    public User(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
     }
 
     public String getName() {
@@ -37,13 +65,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 }

@@ -1,10 +1,12 @@
 import { User } from "../types/User"
 
+const baseUrl = 'http://0.0.0.0:8080/'
+
 export const useApi = () => ({
 
   signin: async (email: string, password: string) => {
 
-    const response = await fetch(`api/login/`, {
+    const response = await fetch(`${baseUrl}api/login/`, {
       method: 'GET',
       headers: {
         'Content-Type':

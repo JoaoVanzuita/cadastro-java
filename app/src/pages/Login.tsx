@@ -13,7 +13,7 @@ export default function () {
   const handleLogin = async () => {
 
     if (userData) {
-      const response = await api.delete(userData)
+      const response = await api.signin(userData.email, userData.password!)
 
       if (response.status == 200) {
 
