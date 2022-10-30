@@ -2,26 +2,27 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 import { useApi } from "../hooks/useApi"
-import { User } from "../types/User"
-
 
 export default function () {
   const api = useApi()
-  const [userData, setUserData] = useState<User>()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const navigate = useNavigate()
 
   const handleLogin = async () => {
 
-    if (userData) {
-      const response = await api.signin(userData.email, userData.password!)
+    if (email && password) {
+      const response = await api.signin(email, password)
 
-      if (response.status == 200) {
+      console.log(response.id)
+
+      if (response.id) {
 
         Swal.fire(`Success`, ``, `success`)
         return
       }
 
-      Swal.fire(`Server error`, `Status: ${response.status}`, `error`)
+      Swal.fire(`Server error`, `Message: ${response.message}`, `error`)
       return
     }
 
@@ -34,17 +35,17 @@ export default function () {
     <div className="form">
       <input
         type="text"
-        onChange={ev => setUserData({ ...userData!, email: ev.currentTarget.value })}
+        onChange={ev => setEmail(ev.currentTarget.value)}
         name="email"
-        value={userData?.email}
+        value={email}
         placeholder="Enter your email"
       />
       <input
         type="password"
-        onChange={ev => setUserData({ ...userData!, password: ev.currentTarget.value })}
+        onChange={ev => setPassword(ev.currentTarget.value)}
 
         name="password"
-        value={userData?.password}
+        value={password}
         placeholder="Enter your password"
       />
       <div className="action" >

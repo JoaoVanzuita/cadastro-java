@@ -1,13 +1,11 @@
 import { User } from "../types/User"
 
-const baseUrl = 'http://0.0.0.0:8080/'
-
 export const useApi = () => ({
 
   signin: async (email: string, password: string) => {
 
-    const response = await fetch(`${baseUrl}api/login/`, {
-      method: 'GET',
+    const response = await fetch(`api/user/login`, {
+      method: 'POST',
       headers: {
         'Content-Type':
           'application/json'
@@ -20,7 +18,7 @@ export const useApi = () => ({
   getById: async () => {
 
     const id = localStorage.getItem('id')
-    const response = await fetch(`api/user/?id=${id}`, {
+    const response = await fetch(`api/user/{id}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
     })
@@ -41,7 +39,7 @@ export const useApi = () => ({
   update: async (user: User) => {
 
     const { idUser: id, name, email, password } = user
-    const response = await fetch(`api/user/?id=${id}`, {
+    const response = await fetch(`api/user/${id}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password })
@@ -52,7 +50,7 @@ export const useApi = () => ({
   delete: async (user: User) => {
 
     const id = user.idUser
-    const response = await fetch(`api/user/?id=${id}`, {
+    const response = await fetch(`api/user/${id}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' }
     })

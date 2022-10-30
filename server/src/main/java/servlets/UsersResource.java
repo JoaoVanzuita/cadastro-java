@@ -64,11 +64,13 @@ public class UsersResource extends HttpServlet {
         return Response.status(200).entity(userJson).build();
     }
 
-    @GET
+    @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(String body){
+
+        System.out.println("chegou");
 
         //Initialing json
         JsonObject json = new Gson().fromJson(body, JsonObject.class);
