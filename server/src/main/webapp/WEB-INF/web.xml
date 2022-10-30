@@ -3,13 +3,15 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>crud-java-web</display-name>
+  <display-name>server</display-name>
   <servlet>
     <servlet-name>Application</servlet-name>
     <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
     <init-param>
-      <param-name>javax.ws.rs.Application</param-name>
-      <param-value>servlets.MyApplication</param-value>
+      <param-name>jersey.config.server.provider.packages</param-name>
+      <param-value>
+        servlets
+      </param-value>
     </init-param>
   </servlet>
   <servlet-mapping>

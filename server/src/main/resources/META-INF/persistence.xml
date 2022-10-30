@@ -9,9 +9,9 @@
 
         <properties>
 
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/crud_java_web" />
-            <property name="javax.persistence.jdbc.user" value="crud_java_web_user" />
-            <property name="javax.persistence.jdbc.password" value="crud_java_web" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/cadastro_java" />
+            <property name="javax.persistence.jdbc.user" value="cadastro_java_user" />
+            <property name="javax.persistence.jdbc.password" value="cadastro_java" />
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
 
             <!-- validate | update | create | create-drop -->

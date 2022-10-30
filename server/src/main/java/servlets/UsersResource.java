@@ -4,21 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import domain.User;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.servlet.ServletException;
+import javax.persistence.*;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
+import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path("/user")
 public class UsersResource extends HttpServlet {
@@ -29,40 +20,125 @@ public class UsersResource extends HttpServlet {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public void post(String body){
-
-//        System.out.println(body);
+    public Response create(String body){
 
         User user = new User();
 
         JsonObject json = new Gson().fromJson(body, JsonObject.class);
 
-//        System.out.println(json);
-//        System.out.println(json.get("name"));
-//        System.out.println(json.get("email"));
-//        System.out.println(json.get("password"));
+        user.setName(json.get("name").getAsString());
+        user.setEmail(json.get("email").getAsString());
+        user.setPassword(json.get("password").getAsString());
+
+        entityManager.getTransaction().begin();
+
+        try{
+
+            entityManager.persist(user);
+
+        }catch (PersistenceException persistenceException){
+
+            return Response.status(404).entity("{\"message\": \"User already registered\"}").build();
+        }
+
+        entityManager.getTransaction().commit();
+
+        return Response.status(201).build();
+    }
+
+    @GET
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getById(@PathParam("id") Long id){
+
+        User user = entityManager.find(User.class, id);
+
+        if(user == null){
+
+            return Response.status(404).entity("{\"message\": \"User not found\"}").build();
+        }
+
+        String userJson = new Gson().toJson(user);
+
+        return Response.status(200).entity(userJson).build();
+    }
+
+    @GET
+    @Path("/login")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login(String body){
+
+        //Initialing json
+        JsonObject json = new Gson().fromJson(body, JsonObject.class);
+
+        //Get query parameters from request body
+        String email = json.get("email").getAsString();
+        String password = json.get("password").getAsString();
+
+        //Initializing query
+        String query = "select u from User u where email = ?1 and password = ?2";
+
+        User user;
+
+        //Getting user
+        TypedQuery<User> typedQuery = entityManager.createQuery(query, User.class);
+
+        try{
+
+            user = typedQuery.setParameter(1, email).setParameter(2, password).getSingleResult();
+
+        }catch (NoResultException noResultException){
+
+            return Response.status(404).entity("{\"message\": \"User not found\"}").build();
+        }
+
+        return Response.status(200).entity(user.getIdUser()).build();
+    }
+
+    @PUT
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response update(@PathParam("id") Long id, String body){
+
+        User user = entityManager.find(User.class, id);
+
+        JsonObject json = new Gson().fromJson(body, JsonObject.class);
 
         user.setName(json.get("name").getAsString());
         user.setEmail(json.get("email").getAsString());
         user.setPassword(json.get("password").getAsString());
 
-//        System.out.println(user.getName());
-//        System.out.println(user.getEmail());
-//        System.out.println(user.getPassword());
+        entityManager.getTransaction().begin();
+
+        entityManager.merge(user);
+
+        entityManager.getTransaction().commit();
+
+        return Response.status(204).build();
+    }
+
+    @DELETE
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response delete(@PathParam("id") Long id){
+
+        User user = entityManager.find(User.class, id);
+
+        if(user == null){
+
+            return Response.status(404).entity("{\"message\": \"User not found\"}").build();
+        }
 
         entityManager.getTransaction().begin();
 
-        entityManager.persist(user);
+        entityManager.remove(user);
 
         entityManager.getTransaction().commit();
-    }
 
-    @GET
-    @Path("{id}")
-    public void get(@PathParam("id") Long id){
-        User user = entityManager.find(User.class, id);
-
-
-
+        return Response.status(204).build();
     }
 }
