@@ -18,7 +18,7 @@ export const useApi = () => ({
   getById: async () => {
 
     const id = localStorage.getItem('id')
-    const response = await fetch(`api/user/{id}`, {
+    const response = await fetch(`api/user/${id}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
     })
@@ -38,9 +38,10 @@ export const useApi = () => ({
   },
   update: async (user: User) => {
 
-    const { idUser: id, name, email, password } = user
+    const id = localStorage.getItem('id')
+    const { name, email, password } = user
     const response = await fetch(`api/user/${id}`, {
-      method: 'POST',
+      method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password })
     })

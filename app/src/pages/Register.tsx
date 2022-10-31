@@ -21,11 +21,11 @@ export default function () {
     const data = { name, email, password }
     const response = await api.create(data)
 
-    if (response.status == 201) {
+    if (response.status >= 201 && response.status < 400) {
 
       Swal.fire(`Success`, ``, `success`)
 
-      navigate('/login')
+      navigate('/')
       return
     }
 

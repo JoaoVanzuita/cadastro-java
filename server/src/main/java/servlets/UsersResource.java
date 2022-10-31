@@ -59,9 +59,7 @@ public class UsersResource extends HttpServlet {
             return Response.status(404).entity("{\"message\": \"User not found\"}").build();
         }
 
-        String userJson = new Gson().toJson(user);
-
-        return Response.status(200).entity(userJson).build();
+        return Response.status(200).entity(user).build();
     }
 
     @POST
@@ -96,7 +94,7 @@ public class UsersResource extends HttpServlet {
             return Response.status(404).entity("{\"message\": \"User not found\"}").build();
         }
 
-        return Response.status(200).entity(user.getIdUser()).build();
+        return Response.status(200).entity(user).build();
     }
 
     @PUT

@@ -20,11 +20,11 @@ export default function () {
     </Routes>
     <footer>
       <nav>
-        {!localStorage.getItem('id') && <Link to="/">Login</Link>}
-        {localStorage.getItem('id') && <Link to="/home">Home</Link>}
-        {localStorage.getItem('id') && <Link to="/manageAccount">Manage account </Link>}
+        <Link to="/">Login</Link>
+        <Link to="/home">Home</Link>
+        <Link to="/manageAccount">Manage account </Link>
         <Link to="/register">Register</Link>
-        {localStorage.getItem('id') && <Link to="" onClick={handleLogout}>Logout</Link>}
+        <Link to="/" onClick={handleLogout}>Logout</Link>
       </nav>
     </footer>
 

@@ -14,15 +14,16 @@ export default function () {
     if (email && password) {
       const response = await api.signin(email, password)
 
-      console.log(response.id)
-
       if (response.id) {
 
         Swal.fire(`Success`, ``, `success`)
+        
+        localStorage.setItem('id', response.id)
+        navigate('/home')
         return
       }
 
-      Swal.fire(`Server error`, `Message: ${response.message}`, `error`)
+      Swal.fire(`Server error`, ``, `error`)
       return
     }
 

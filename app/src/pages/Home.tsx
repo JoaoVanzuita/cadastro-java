@@ -30,7 +30,8 @@ export default function () {
         </thead>
         <tbody>
           <tr>
-            <td>{userData?.idUser}</td>
+            <td>{localStorage
+            .getItem('id')}</td>
             <td>{userData?.name}</td>
             <td>{userData?.email}</td>
           </tr>

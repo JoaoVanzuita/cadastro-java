@@ -20,14 +20,14 @@ export default function () {
 
     const response = await api.update(userData!)
 
-    if (response.status == 200) {
+    if (response.status >= 200 && response.status < 400) {
 
-      Swal.fire(`Success`, `Status: ${response.message} \n Id edited: ${response.id}`, `success`)
+      Swal.fire(`Success`, ``, `success`)
 
       return
     }
 
-    Swal.fire(`Server error`, `Status: ${response.status} \nError: ${response.message}`, `error`)
+    Swal.fire(`Server error`, ``, `error`)
 
     return
   }
